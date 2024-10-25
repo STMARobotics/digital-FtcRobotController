@@ -67,7 +67,7 @@ public class DriveOnlyOpMode extends LinearOpMode {
         slideSubsystem = new SlideSubsystem(hardwareMap, telemetry);
         arm = new ArmSubsystem(hardwareMap, telemetry);
         wrist = new WristSubsystem(hardwareMap, telemetry);
-        // Wait for the game to start (driver presses START)
+         //Wait for the game to start (driver presses START)
         waitForStart();
         runtime.reset();
 
@@ -78,9 +78,9 @@ public class DriveOnlyOpMode extends LinearOpMode {
             float strafe = gamepad1.left_stick_x;
             float turn = gamepad1.right_stick_x;
 
-            float reductionFactor = 1;
+            float reductionFactor = 2;
             if (gamepad1.left_bumper) {
-                reductionFactor = 4;
+                reductionFactor = 6;
             }
 
             // Move Slide to positions
@@ -92,21 +92,24 @@ public class DriveOnlyOpMode extends LinearOpMode {
 
             // Handles move arm to set positions with a fudge fa ctor
             double fudgeFactorPercentage = gamepad2.right_trigger + (-gamepad2.left_trigger);
-            if (gamepad1.a){
+            if (gamepad2.a){
                 arm.moveToArmToCollectPosition(fudgeFactorPercentage);
-            } else if (gamepad1.b){
+            } else if (gamepad2.b){
                 arm.moveArmToClearBarrierPosition(fudgeFactorPercentage);
-            } else if (gamepad1.x){
+            } else if (gamepad2.x){
                 arm.moveArmToScoreSampleInLowPosition(fudgeFactorPercentage);
-            } else if (gamepad1.dpad_left){
+            } else if (gamepad2.y){
                 arm.moveArmToCollapsedIntoRobotPosition(fudgeFactorPercentage);
-            } else if (gamepad1.dpad_right) {
+            } else if (gamepad2.dpad_right) {
                 arm.moveArmToScoreSpecimenPosition(fudgeFactorPercentage);
-            } else if (gamepad1.dpad_up){
-                arm.moveArmToAttachHangingHookPosition(fudgeFactorPercentage);
-            } else if (gamepad1.dpad_down){
-                arm.moveArmToWinchRobotPosition(fudgeFactorPercentage);
+            }else if (gamepad2.right_bumper){
+                arm.resetArmEncoder();
             }
+            // else if (gamepad2.dpad_up){
+              //  arm.moveArmToAttachHangingHookPosition(fudgeFactorPercentage);
+            //} else if (gamepad2.dpad_down){
+              //  arm.moveArmToWinchRobotPosition(fudgeFactorPercentage);
+
 
             if (gamepad2.left_bumper){
                 wrist.moveToPosition(.75);
