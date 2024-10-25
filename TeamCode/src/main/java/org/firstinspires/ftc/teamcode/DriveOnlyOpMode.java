@@ -31,7 +31,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -53,20 +52,16 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class DriveOnlyOpMode extends LinearOpMode {
 
     // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
-    DriveSubsystem driveSubsystem;
-    SlideSubsystem slideSubsystem;
-    ArmSubsystem arm;
-    WristSubsystem wrist;
+    private final ElapsedTime runtime = new ElapsedTime();
 
     @Override
     public void runOpMode() {
         DriveSubsystem driveSubsystem = new DriveSubsystem(hardwareMap, telemetry);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        slideSubsystem = new SlideSubsystem(hardwareMap, telemetry);
-        arm = new ArmSubsystem(hardwareMap, telemetry);
-        wrist = new WristSubsystem(hardwareMap, telemetry);
+        SlideSubsystem slideSubsystem = new SlideSubsystem(hardwareMap, telemetry);
+        ArmSubsystem arm = new ArmSubsystem(hardwareMap, telemetry);
+        WristSubsystem wrist = new WristSubsystem(hardwareMap, telemetry);
          //Wait for the game to start (driver presses START)
         waitForStart();
         runtime.reset();
@@ -74,13 +69,13 @@ public class DriveOnlyOpMode extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            float forward = gamepad1.left_stick_y;
+            float forward = -gamepad1.left_stick_y;
             float strafe = gamepad1.left_stick_x;
             float turn = gamepad1.right_stick_x;
 
-            float reductionFactor = 2;
+            double reductionFactor = 1.5;
             if (gamepad1.left_bumper) {
-                reductionFactor = 6;
+                reductionFactor = 3;
             }
 
             // Move Slide to positions
@@ -90,7 +85,7 @@ public class DriveOnlyOpMode extends LinearOpMode {
                 slideSubsystem.setPosition(SlideSubsystem.LIFT_COLLAPSED);
             }
 
-            // Handles move arm to set positions with a fudge fa ctor
+            // Handles move arm to set positions with a fudge factor
             double fudgeFactorPercentage = gamepad2.right_trigger + (-gamepad2.left_trigger);
             if (gamepad2.a){
                 arm.moveToArmToCollectPosition(fudgeFactorPercentage);
@@ -117,7 +112,11 @@ public class DriveOnlyOpMode extends LinearOpMode {
                 wrist.moveToPosition(0);
             }
 
-            driveSubsystem.moveRobotCentric(forward, strafe, turn, reductionFactor);
+            driveSubsystem.moveFieldCentric(strafe, forward, turn, reductionFactor);
+
+            if (gamepad1.back) {
+                driveSubsystem.resetYaw();
+            }
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());

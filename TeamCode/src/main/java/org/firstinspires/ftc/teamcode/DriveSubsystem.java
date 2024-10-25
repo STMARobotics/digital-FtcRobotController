@@ -38,10 +38,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 import java.util.function.BooleanSupplier;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 /*
  * This file works in conjunction with the External Hardware Class sample called: ConceptExternalHardwareClass.java
@@ -123,8 +119,8 @@ public class DriveSubsystem {
     private void setupIMU() {
         imu = hardwareMap.get(IMU.class, IMU);
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
+                RevHubOrientationOnRobot.LogoFacingDirection.FORWARD,
+                RevHubOrientationOnRobot.UsbFacingDirection.UP));
         imu.initialize(parameters);
     }
 
@@ -192,7 +188,7 @@ public class DriveSubsystem {
 
     }
 
-    public void moveFieldCentric(double x, double y, double rx) {
+    public void moveFieldCentric(double x, double y, double rx, double reductionFactor) {
         double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
         // Rotate the movement direction counter to the bot's rotation
@@ -205,10 +201,25 @@ public class DriveSubsystem {
         // This ensures all the powers maintain the same ratio,
         // but only if at least one is out of the range [-1, 1]
         double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
+        denominator *= reductionFactor;
         double frontLeftPower = (rotY + rotX + rx) / denominator;
         double backLeftPower = (rotY - rotX + rx) / denominator;
         double frontRightPower = (rotY - rotX - rx) / denominator;
         double backRightPower = (rotY + rotX - rx) / denominator;
+
+        frontLeftMotor.setPower(frontLeftPower);
+        backLeftMotor.setPower(backLeftPower);
+        frontRightMotor.setPower(frontRightPower);
+        backRightMotor.setPower(backRightPower);
+
+        telemetry.addData("Forward", x);
+        telemetry.addData("Strafe", y);
+        telemetry.addData("Turn", rx);
+        telemetry.addData("Reduction Factor", reductionFactor);
+        telemetry.addData("Front Left Power", frontLeftPower);
+        telemetry.addData("Front Right Power", frontRightPower);
+        telemetry.addData("Back Left Power", backLeftPower);
+        telemetry.addData("Back Right Power", backRightPower);
     }
 
     public void setPower(float forward, float strafe, float turn, float reductionFactor) {
