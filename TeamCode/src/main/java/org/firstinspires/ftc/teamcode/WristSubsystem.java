@@ -13,14 +13,14 @@ public class WristSubsystem {
 
     private Servo servo;
 
-    public WristSubsystem(HardwareMap hm, Telemetry telemetry){
+    public WristSubsystem(HardwareMap hm, Telemetry telemetry) {
         this.hardwareMap = hm;
         this.telemetry = telemetry;
 
         servo = hardwareMap.get(Servo.class, WRIST_SERVO);
     }
 
-    public void moveToPosition(double position){
+    public void moveToPosition(double position) {
         servo.setPosition(position);
     }
 }
