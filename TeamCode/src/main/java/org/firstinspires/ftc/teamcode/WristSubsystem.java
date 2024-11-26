@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class WristSubsystem {
-    public static final String WRIST_SERVO = "wrist-servo";
+    public static final String WRIST_SERVO = "wrist_servo";
 
     private HardwareMap hardwareMap;
     private Telemetry telemetry;

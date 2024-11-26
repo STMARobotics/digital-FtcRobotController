@@ -51,6 +51,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 //@Disabled
 public class DriveOnlyOpMode extends LinearOpMode {
 
+
     // Declare OpMode members.
     private final ElapsedTime runtime = new ElapsedTime();
 
@@ -62,9 +63,12 @@ public class DriveOnlyOpMode extends LinearOpMode {
         SlideSubsystem slideSubsystem = new SlideSubsystem(hardwareMap, telemetry);
         ArmSubsystem arm = new ArmSubsystem(hardwareMap, telemetry);
         WristSubsystem wrist = new WristSubsystem(hardwareMap, telemetry);
+        ClawSubsystem claw = new ClawSubsystem(hardwareMap, telemetry);
          //Wait for the game to start (driver presses START)
         waitForStart();
         runtime.reset();
+        double iF = gamepad2.right_trigger * -1;
+        double iR = gamepad2.left_trigger;
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -75,40 +79,60 @@ public class DriveOnlyOpMode extends LinearOpMode {
 
             double reductionFactor = 1.5;
             if (gamepad1.left_bumper) {
-                reductionFactor = 3;
+                reductionFactor = 3.0576878987678;
             }
 
+            double slidePower = (iF + iR);
+
             // Move Slide to positions
-            if (gamepad2.dpad_up){
-                slideSubsystem.setPosition(SlideSubsystem.LIFT_SCORING_IN_HIGH_BASKET);
-            } else if (gamepad2.dpad_down) {
-                slideSubsystem.setPosition(SlideSubsystem.LIFT_COLLAPSED);
+            if (gamepad2.left_trigger > 0.1){
+                    slideSubsystem.setPower(gamepad2.left_trigger * -1);
+               if (gamepad2.right_trigger > 0.1){
+                    slideSubsystem.setPower(gamepad2.right_trigger);
+                } else {
+                    slideSubsystem.setPower(0);
+                }
+            } else {
+                slideSubsystem.setPower(.5);
+            }
+
+            if (gamepad2.left_trigger > 0.1) {
+                slideSubsystem.setPower(slidePower);
+            } else if (gamepad2.right_trigger > 0.1) {
+                slideSubsystem.setPower(slidePower);
+            } else {
+                slideSubsystem.setPower(0);
+            }
+
+            if (gamepad1.dpad_left){
+                claw.open();
+            } else if (gamepad1.dpad_right){
+                claw.close();
             }
 
             // Handles move arm to set positions with a fudge factor
             double fudgeFactorPercentage = gamepad2.right_trigger + (-gamepad2.left_trigger);
             if (gamepad2.a){
-                arm.moveToArmToCollectPosition(fudgeFactorPercentage);
-            } else if (gamepad2.b){
-                arm.moveArmToClearBarrierPosition(fudgeFactorPercentage);
-            } else if (gamepad2.x){
-                arm.moveArmToScoreSampleInLowPosition(fudgeFactorPercentage);
+                arm.setArmPosition(ArmSubsystem.Arm_Start_Position);
             } else if (gamepad2.y){
-                arm.moveArmToCollapsedIntoRobotPosition(fudgeFactorPercentage);
-            } else if (gamepad2.dpad_right) {
-                arm.moveArmToScoreSpecimenPosition(fudgeFactorPercentage);
-            }else if (gamepad2.right_bumper){
+                arm.setArmPosition(ArmSubsystem.Arm_Collect_Position);
+            } else if (gamepad2.x){
+                arm.setArmPosition(ArmSubsystem.Arm_Low_Bucket);
+            } else if (gamepad2.b){
+                arm.setArmPosition(ArmSubsystem.Arm_High_Bucket);
+            } else if (gamepad2.dpad_up) {
+                arm.setArmPosition(ArmSubsystem.Arm_Low_Bar);
+            } else if (gamepad2.dpad_down){
+                arm.setArmPosition(ArmSubsystem.Arm_Clear_Barrier);
+            } else if (gamepad2.start) {
                 arm.resetArmEncoder();
-            }
-            // else if (gamepad2.dpad_up){
-              //  arm.moveArmToAttachHangingHookPosition(fudgeFactorPercentage);
-            //} else if (gamepad2.dpad_down){
-              //  arm.moveArmToWinchRobotPosition(fudgeFactorPercentage);
 
 
-            if (gamepad2.left_bumper){
+
+
+            if (gamepad2.right_stick_button){
                 wrist.moveToPosition(.75);
-            } else if (gamepad2.left_trigger > 0){
+            } else if (gamepad2.left_stick_button){
                 wrist.moveToPosition(0);
             }
 
@@ -123,4 +147,6 @@ public class DriveOnlyOpMode extends LinearOpMode {
             telemetry.update();
         }
     }
+}
+
 }

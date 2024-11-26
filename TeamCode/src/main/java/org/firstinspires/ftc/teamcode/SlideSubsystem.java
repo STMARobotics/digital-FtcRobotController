@@ -40,10 +40,15 @@ public class SlideSubsystem {
         setPosition(this.liftPosition);
     }
 
+    public void setPower(double power) {
+        slideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        slideMotor.setPower(power);
+    }
+
     public void setPosition(double liftPosition) {
         slideMotor.setTargetPosition((int) (liftPosition));
 
-        ((DcMotorEx) slideMotor).setVelocity(2100);
+        ((DcMotorEx) slideMotor).setVelocity(1000);
         slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 }
