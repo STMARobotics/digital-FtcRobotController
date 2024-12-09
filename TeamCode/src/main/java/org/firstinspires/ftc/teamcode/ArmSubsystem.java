@@ -46,7 +46,7 @@ public class ArmSubsystem {
     public void setArmPosition(double position) {
         armMotor.setTargetPosition((int) (position));
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armMotor.setPower(.75);
+        armMotor.setPower(.5);
     }
 
     public void resetArmEncoder() {

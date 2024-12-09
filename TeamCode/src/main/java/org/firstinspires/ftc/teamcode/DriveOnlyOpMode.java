@@ -77,8 +77,8 @@ public class DriveOnlyOpMode extends LinearOpMode {
             float strafe = gamepad1.left_stick_x;
             float turn = gamepad1.right_stick_x;
 
-            iF = gamepad2.right_trigger * -1;
-            iR = gamepad2.left_trigger;
+            iF = gamepad2.right_trigger;
+            iR = gamepad2.left_trigger * -1;
 
 
             double reductionFactor = 1.5;
@@ -87,19 +87,6 @@ public class DriveOnlyOpMode extends LinearOpMode {
             }
 
             double slidePower = (iF + iR);
-
-            // Move Slide to positions
-//            if (gamepad2.left_trigger > 0.1){
-//                    slideSubsystem.setPower(gamepad2.left_trigger * -1);
-//               if (gamepad2.right_trigger > 0.1){
-//                    slideSubsystem.setPower(gamepad2.right_trigger);
-//                } else {
-//                    slideSubsystem.setPower(0);
-//                }
-//            } else {
-//                slideSubsystem.setPower(.5);
-//            }
-
             if (gamepad2.left_trigger > 0.1) {
                 slideSubsystem.setPower(slidePower);
             } else if (gamepad2.right_trigger > 0.1) {
