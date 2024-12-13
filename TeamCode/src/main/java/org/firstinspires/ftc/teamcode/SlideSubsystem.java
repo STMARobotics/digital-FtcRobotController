@@ -23,11 +23,13 @@ public class SlideSubsystem {
     private HardwareMap hardwareMap;
     private Telemetry telemetry;
 
+
     public SlideSubsystem (HardwareMap hm, Telemetry telemetry){
         this.hardwareMap = hm;
         this.telemetry = telemetry;
 
         slideMotor = hardwareMap.get(DcMotor.class, SLIDE_MOTOR);
+        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         slideMotor.setTargetPosition(0);

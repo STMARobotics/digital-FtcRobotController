@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.teamcode.ArmSubsystem;
 
 
 /*
@@ -51,7 +52,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 //@Disabled
 public class DriveOnlyOpMode extends LinearOpMode {
 
-
     // Declare OpMode members.
     private final ElapsedTime runtime = new ElapsedTime();
 
@@ -60,8 +60,8 @@ public class DriveOnlyOpMode extends LinearOpMode {
         DriveSubsystem driveSubsystem = new DriveSubsystem(hardwareMap, telemetry);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        SlideSubsystem slideSubsystem = new SlideSubsystem(hardwareMap, telemetry);
         ArmSubsystem arm = new ArmSubsystem(hardwareMap, telemetry);
+        SlideSubsystem slideSubsystem = new SlideSubsystem(hardwareMap, telemetry);
         WristSubsystem wrist = new WristSubsystem(hardwareMap, telemetry);
         ClawSubsystem claw = new ClawSubsystem(hardwareMap, telemetry);
          //Wait for the game to start (driver presses START)
@@ -69,6 +69,7 @@ public class DriveOnlyOpMode extends LinearOpMode {
         runtime.reset();
         double iF;
         double iR;
+        double targetArmPosition;
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -103,6 +104,7 @@ public class DriveOnlyOpMode extends LinearOpMode {
 
             // Handles move arm to set positions with a fudge factor
             double fudgeFactorPercentage = gamepad2.right_trigger + (-gamepad2.left_trigger);
+
             if (gamepad2.a){
                 arm.setArmPosition(ArmSubsystem.Arm_Start_Position);
             } else if (gamepad2.y){
