@@ -11,14 +11,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Autonomous extends LinearOpMode {
     private final ElapsedTime runtime = new ElapsedTime();
 
+    @SuppressLint("SuspiciousIndentation")
     @Override
     public void runOpMode() throws InterruptedException {
         waitForStart();
         runtime.reset();
         DriveSubsystem driveSubsystem = new DriveSubsystem(hardwareMap, telemetry);
 
-    while (opModeIsActive())
-        driveSubsystem.driveForward(1, 2);
+    while (opModeIsActive()) driveSubsystem.driveForward(1, 2);
         while (driveSubsystem.isMoving()) sleep(1);
         driveSubsystem.strafeLeft(1, -24);
         while (driveSubsystem.isMoving()) sleep(1);

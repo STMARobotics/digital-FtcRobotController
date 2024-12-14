@@ -21,14 +21,10 @@ public class BetaDriveThing extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        final DcMotor frontRight = hardwareMap.dcMotor.get("frontRightMotor");
-        final DcMotor rearRight = hardwareMap.dcMotor.get("backRightMotor");
-        final DcMotor rearLeft = hardwareMap.dcMotor.get("backLeftMotor");
-        final DcMotor frontLeft = hardwareMap.dcMotor.get("frontLeftMotor");
-        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        final DcMotor frontRight = hardwareMap.dcMotor.get("front_right_motor");
+        final DcMotor rearRight = hardwareMap.dcMotor.get("back_right_motor");
+        final DcMotor rearLeft = hardwareMap.dcMotor.get("back_left_motor");
+        final DcMotor frontLeft = hardwareMap.dcMotor.get("front_left_motor");
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         ArmSubsystem arm = new ArmSubsystem(hardwareMap, telemetry);
@@ -90,27 +86,31 @@ public class BetaDriveThing extends LinearOpMode {
                 arm.setArmPosition(ArmSubsystem.Arm_Clear_Barrier);
             } else if (gamepad2.start) {
                 arm.resetArmEncoder();
-
-
-                if (gamepad2.right_stick_button) {
-                    wrist.moveToPosition(.75);
-                } else if (gamepad2.left_stick_button) {
-                    wrist.moveToPosition(0);
-                }
-
-                double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-                double frontRightPower = (y + x + rx) / denominator;
-                double rearRightPower = (y - x + rx) / denominator;
-                double rearLeftPower = (y + x - rx) / denominator;
-                double frontLeftPower = (y - x - rx) / denominator;
-
-                frontRight.setPower(frontRightPower);
-                rearRight.setPower(rearRightPower);
-                rearLeft.setPower(rearLeftPower);
-                frontLeft.setPower(frontLeftPower);
-
-
             }
+
+            if (gamepad2.right_stick_button) {
+                wrist.moveToPosition(.75);
+            } else if (gamepad2.left_stick_button) {
+                wrist.moveToPosition(0);
+            }
+
+            double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+            double frontRightPower = (y + x + rx) / denominator;
+            double rearRightPower = (y - x + rx) / denominator;
+            double rearLeftPower = (y + x - rx) / denominator;
+            double frontLeftPower = (y - x - rx) / denominator;
+
+            frontRight.setPower(frontRightPower);
+            rearRight.setPower(rearRightPower);
+            rearLeft.setPower(rearLeftPower);
+            frontLeft.setPower(frontLeftPower);
+
+
+            telemetry.addData("gamepad1 left stick y ", y);
+            telemetry.addData("gamepad1 left stick x ", x);
+            telemetry.addData("motor power", frontLeftPower);
+            telemetry.addData("turn", rx);
+
         }
     }
 }
