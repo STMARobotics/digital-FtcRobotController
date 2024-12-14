@@ -21,12 +21,12 @@ public class ArmSubsystem {
     public static final String ARM_MOTOR = "arm_motor";
 
     public  static final double ARM_TICKS_PER_DEGREE = 5;
-    public  static final double Arm_High_Bucket = 25* ARM_TICKS_PER_DEGREE;
+    public  static final double Arm_High_Bucket = 45* ARM_TICKS_PER_DEGREE;
     public static  final double Arm_Start_Position = -25
             * ARM_TICKS_PER_DEGREE;
     public  static final double Arm_Collect_Position = 5 * ARM_TICKS_PER_DEGREE;
     public  static final double ARM_SCORE_SPECIMEN = 90 * ARM_TICKS_PER_DEGREE;
-    public  static final double Arm_Low_Bucket = 50 * ARM_TICKS_PER_DEGREE;
+    public  static final double Arm_Low_Bucket = 25 * ARM_TICKS_PER_DEGREE;
     public  static final double Arm_Clear_Barrier = 12.5 * ARM_TICKS_PER_DEGREE;
     public  static final double Arm_Low_Bar = 35 * ARM_TICKS_PER_DEGREE;
     public  static final double ARM_WINCH_ROBOT = 10 * ARM_TICKS_PER_DEGREE;
