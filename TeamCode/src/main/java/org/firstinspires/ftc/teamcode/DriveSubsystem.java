@@ -64,7 +64,8 @@ public class DriveSubsystem {
     // Define Motor and Servo objects  (Make them private so they can't be accessed externally)
     private DcMotor frontLeftMotor;
     private DcMotor frontRightMotor;
-    private DcMotor backLeftMotor;  private DcMotor backRightMotor;
+    private DcMotor backLeftMotor;
+    private DcMotor backRightMotor;
 
     private HardwareMap hardwareMap;
     private Telemetry telemetry;

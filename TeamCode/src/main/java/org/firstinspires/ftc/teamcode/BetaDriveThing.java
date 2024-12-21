@@ -45,7 +45,7 @@ public class BetaDriveThing extends LinearOpMode {
             double rx = gamepad1.right_stick_x;  // Turning
 
 
-            double turningSpeed = 0.3;
+            double turningSpeed = 0.6;
             if (Math.abs(rx) > 0.1) {
                 rx = turningSpeed * Math.signum(rx);
             } else {
@@ -65,34 +65,34 @@ public class BetaDriveThing extends LinearOpMode {
                 slideSubsystem.setPower(0);
             }
 
-            if (gamepad1.dpad_left) {
+            if (gamepad2.dpad_left) {
                 claw.open();
-            } else if (gamepad1.dpad_right) {
+            } else if (gamepad2.dpad_right) {
                 claw.close();
             }
 
 
-            if (gamepad2.a) {
+            if (gamepad2.x) {
                 arm.setArmPosition(ArmSubsystem.Arm_Start_Position);
-            } else if (gamepad2.y) {
+            } else if (gamepad2.a) {
                 arm.setArmPosition(ArmSubsystem.Arm_Collect_Position);
-            } else if (gamepad2.x) {
-                arm.setArmPosition(ArmSubsystem.Arm_Low_Bucket);
             } else if (gamepad2.b) {
+                arm.setArmPosition(ArmSubsystem.Arm_Low_Bucket);
+            } else if (gamepad2.y) {
                 arm.setArmPosition(ArmSubsystem.Arm_High_Bucket);
-            } else if (gamepad2.dpad_up) {
+            } else if (gamepad2.left_stick_button) {
                 arm.setArmPosition(ArmSubsystem.Arm_Low_Bar);
-            } else if (gamepad2.dpad_down) {
+            } else if (gamepad2.right_stick_button) {
                 arm.setArmPosition(ArmSubsystem.Arm_Clear_Barrier);
             } else if (gamepad2.start) {
                 arm.resetArmEncoder();
             }
 
-            if (gamepad2.right_stick_button) {
+            if (gamepad2.dpad_up) {
                 wrist.moveToPosition(.75);
-            } else if (gamepad2.left_stick_button) {
+            } else if (gamepad2.dpad_down) {
                 wrist.moveToPosition(0);
-            }
+
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
             double frontRightPower = (y + x + rx) / denominator;
@@ -110,7 +110,7 @@ public class BetaDriveThing extends LinearOpMode {
             telemetry.addData("gamepad1 left stick x ", x);
             telemetry.addData("motor power", frontLeftPower);
             telemetry.addData("turn", rx);
-
         }
     }
+}
 }
