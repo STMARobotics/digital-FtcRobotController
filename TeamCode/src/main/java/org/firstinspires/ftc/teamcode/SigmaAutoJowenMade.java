@@ -1,15 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import org.firstinspires.ftc.teamcode.SlideSubsystem;
-import org.firstinspires.ftc.teamcode.ArmSubsystem;
-import org.firstinspires.ftc.teamcode.ClawSubsystem;
-import org.firstinspires.ftc.teamcode.WristSubsystem;
+
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous
-public class SigmaAutoOwenMade extends LinearOpMode {
+public class SigmaAutoJowenMade extends LinearOpMode {
     // Declare variables
     private SlideSubsystem slideSubsystem;
     private ArmSubsystem armSubsystem;
@@ -18,10 +14,10 @@ public class SigmaAutoOwenMade extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        DcMotor frontRight = hardwareMap.dcMotor.get("frontRight");
-        DcMotor rearRight = hardwareMap.dcMotor.get("rearRight");
-        DcMotor rearLeft = hardwareMap.dcMotor.get("rearLeft");
-        DcMotor frontLeft = hardwareMap.dcMotor.get("frontLeft");
+        DcMotor frontRight = hardwareMap.dcMotor.get("front_right_motor");
+        DcMotor rearRight = hardwareMap.dcMotor.get("Back_right_motor");
+        DcMotor rearLeft = hardwareMap.dcMotor.get("back_left_motor");
+        DcMotor frontLeft = hardwareMap.dcMotor.get("front_left_motor");
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
