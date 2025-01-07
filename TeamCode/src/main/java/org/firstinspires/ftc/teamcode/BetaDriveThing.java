@@ -2,16 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.ClawSubsystem;
-import org.firstinspires.ftc.teamcode.SlideSubsystem;
-import org.firstinspires.ftc.teamcode.ArmSubsystem;
-import org.firstinspires.ftc.teamcode.WristSubsystem;
 
 @TeleOp
 public class BetaDriveThing extends LinearOpMode {
@@ -20,20 +13,19 @@ public class BetaDriveThing extends LinearOpMode {
     ArmSubsystem armSubsystem;
 
     @Override
-    public void runOpMode() throws InterruptedException {
-        final DcMotor frontRight = hardwareMap.dcMotor.get("front_right_motor");
-        final DcMotor rearRight = hardwareMap.dcMotor.get("back_right_motor");
-        final DcMotor rearLeft = hardwareMap.dcMotor.get("back_left_motor");
-        final DcMotor frontLeft = hardwareMap.dcMotor.get("front_left_motor");
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
+    public void runOpMode() {
+        final DcMotor front_right_motor = hardwareMap.dcMotor.get("front_right_motor");
+        final DcMotor back_right_motor = hardwareMap.dcMotor.get("back_right_motor");
+        final DcMotor back_left_motor = hardwareMap.dcMotor.get("back_left_motor");
+        final DcMotor front_left_motor = hardwareMap.dcMotor.get("front_left_motor");
         ArmSubsystem arm = new ArmSubsystem(hardwareMap, telemetry);
         SlideSubsystem slideSubsystem = new SlideSubsystem(hardwareMap, telemetry);
         WristSubsystem wrist = new WristSubsystem(hardwareMap, telemetry);
         ClawSubsystem claw = new ClawSubsystem(hardwareMap, telemetry);
-        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        rearRight.setDirection(DcMotorSimple.Direction.REVERSE);
-
+        front_right_motor.setDirection(DcMotorSimple.Direction.REVERSE);
+        back_left_motor.setDirection(DcMotorSimple.Direction.REVERSE);
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
 
         waitForStart();
         if (isStopRequested()) return;
@@ -95,22 +87,16 @@ public class BetaDriveThing extends LinearOpMode {
 
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-            double frontRightPower = (y + x + rx) / denominator;
-            double rearRightPower = (y - x + rx) / denominator;
-            double rearLeftPower = (y + x - rx) / denominator;
-            double frontLeftPower = (y - x - rx) / denominator;
+            double front_right_power = (y + x + rx) / denominator;
+            double back_right_power = (y - x + rx) / denominator;
+            double back_left_power = (y + x - rx) / denominator;
+            double front_left_power = (y - x - rx) / denominator;
 
-            frontRight.setPower(frontRightPower);
-            rearRight.setPower(rearRightPower);
-            rearLeft.setPower(rearLeftPower);
-            frontLeft.setPower(frontLeftPower);
-
-
-            telemetry.addData("gamepad1 left stick y ", y);
-            telemetry.addData("gamepad1 left stick x ", x);
-            telemetry.addData("motor power", frontLeftPower);
-            telemetry.addData("turn", rx);
+            front_right_motor.setPower(front_right_power);
+            back_right_motor.setPower(back_right_power);
+            back_left_motor.setPower(back_left_power);
+            front_left_motor.setPower(front_left_power);
         }
     }
-}
+    }
 }

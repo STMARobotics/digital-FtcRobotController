@@ -13,18 +13,18 @@ public class SigmaAutoJowenMade extends LinearOpMode {
     private ClawSubsystem clawSubsystem;
 
     @Override
-    public void runOpMode() throws InterruptedException {
-        DcMotor frontRight = hardwareMap.dcMotor.get("front_right_motor");
-        DcMotor rearRight = hardwareMap.dcMotor.get("Back_right_motor");
-        DcMotor rearLeft = hardwareMap.dcMotor.get("back_left_motor");
-        DcMotor frontLeft = hardwareMap.dcMotor.get("front_left_motor");
-        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    public void runOpMode() {
+        DcMotor front_right_motor = hardwareMap.dcMotor.get("front_right_motor");
+        DcMotor back_right_motor = hardwareMap.dcMotor.get("back_right_motor");
+        DcMotor back_left_motor = hardwareMap.dcMotor.get("back_left_motor");
+        DcMotor front_left_motor = hardwareMap.dcMotor.get("front_left_motor");
+        front_left_motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        back_right_motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        back_left_motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        front_left_motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        rearRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        front_right_motor.setDirection(DcMotorSimple.Direction.REVERSE);
+        back_right_motor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         telemetry.addData("Status", "Initialized. Waiting for start...");
         telemetry.update();
@@ -39,40 +39,42 @@ public class SigmaAutoJowenMade extends LinearOpMode {
         wristSubsystem.moveToPosition(0);
         sleep(500);
         clawSubsystem.open();
+        sleep(250);
+        ;
         telemetry.addData("status", "auto finish");
         telemetry.update();
 
 
     }
 
-    private void moveDrivetrain(DcMotor frontLeft, DcMotor rearLeft, DcMotor frontRight, DcMotor rearRight, double power, int duration) throws InterruptedException {
-        frontLeft.setPower(power);
-        rearLeft.setPower(power);
-        frontRight.setPower(power);
-        rearRight.setPower(power);
+    private void moveDrivetrain(DcMotor front_left_motor, DcMotor back_left_motor, DcMotor front_right_motor, DcMotor back_right_motor, double power, int duration) {
+        front_left_motor.setPower(power);
+        back_left_motor.setPower(power);
+        front_right_motor.setPower(power);
+        back_right_motor.setPower(power);
         sleep(duration);
     }
 
-    private void stopDrivetrain(DcMotor frontLeft, DcMotor rearLeft, DcMotor frontRight, DcMotor rearRight) {
-        frontLeft.setPower(0);
-        rearLeft.setPower(0);
-        frontRight.setPower(0);
-        rearRight.setPower(0);
+    private void stopDrivetrain(DcMotor front_left_motor, DcMotor back_left_motor, DcMotor front_right_motor, DcMotor back_right_motor) {
+        front_left_motor.setPower(0);
+        back_left_motor.setPower(0);
+        front_right_motor.setPower(0);
+        back_right_motor.setPower(0);
     }
 
-    private void rotateDrivetrainLeft(DcMotor frontLeft, DcMotor rearLeft, DcMotor frontRight, DcMotor rearRight, double power, int duration) throws InterruptedException {
-        frontLeft.setPower(-power);
-        rearLeft.setPower(-power);
-        frontRight.setPower(power);
-        rearRight.setPower(power);
+    private void rotateDrivetrainLeft(DcMotor front_left_motor, DcMotor back_left_motor, DcMotor front_right_motor, DcMotor back_right_motor, double power, int duration) {
+        front_left_motor.setPower(-power);
+        back_left_motor.setPower(-power);
+        front_right_motor.setPower(power);
+        back_right_motor.setPower(power);
         sleep(duration);
     }
 
-    private void rotateDrivetrainRight(DcMotor frontLeft, DcMotor rearLeft, DcMotor frontRight, DcMotor rearRight, double power, int duration) throws InterruptedException {
-        frontLeft.setPower(power);
-        rearLeft.setPower(power);
-        frontRight.setPower(-power);
-        rearRight.setPower(-power);
+    private void rotateDrivetrainRight(DcMotor front_left_motor, DcMotor back_left_motor, DcMotor front_right_motor, DcMotor back_right_motor, double power, int duration) {
+        front_left_motor.setPower(power);
+        back_left_motor.setPower(power);
+        front_right_motor.setPower(-power);
+        back_right_motor.setPower(-power);
         sleep(duration);
     }
 
