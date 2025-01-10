@@ -84,7 +84,7 @@ public class BetaDriveThing extends LinearOpMode {
                 wrist.moveToPosition(.75);
             } else if (gamepad2.dpad_down) {
                 wrist.moveToPosition(0);
-
+            }
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
             double front_right_power = (y + x + rx) / denominator;
@@ -97,6 +97,5 @@ public class BetaDriveThing extends LinearOpMode {
             back_left_motor.setPower(back_left_power);
             front_left_motor.setPower(front_left_power);
         }
-    }
     }
 }
