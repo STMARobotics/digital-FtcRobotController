@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous
 public class SigmaAutoJowenMade extends LinearOpMode {
-    // Declare variables
     private SlideSubsystem slideSubsystem;
     private ArmSubsystem armSubsystem;
     private WristSubsystem wristSubsystem;
@@ -40,7 +39,6 @@ public class SigmaAutoJowenMade extends LinearOpMode {
         sleep(500);
         clawSubsystem.open();
         sleep(250);
-        ;
         telemetry.addData("status", "auto finish");
         telemetry.update();
 
