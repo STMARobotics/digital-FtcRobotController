@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 public class BetaDriveThing extends LinearOpMode {
     private double iF;
     private double iR;
-    ArmSubsystem armSubsystem;
+    private final int MAX_SLIDE_EXTEND = 2100;
 
     @Override
     public void runOpMode() {
@@ -51,7 +51,8 @@ public class BetaDriveThing extends LinearOpMode {
             double slidePower = (iF + iR);
             if (gamepad2.left_trigger > 0.1) {
                 slideSubsystem.setPower(slidePower);
-            } else if (gamepad2.right_trigger > 0.1) {
+            } else if ((gamepad2.right_trigger > 0.1) && slideSubsystem.getPosition() <= MAX_SLIDE_EXTEND) {
+                // Only move out if the slide is shorter than the max
                 slideSubsystem.setPower(slidePower);
             } else {
                 slideSubsystem.setPower(0);
@@ -67,7 +68,7 @@ public class BetaDriveThing extends LinearOpMode {
             if (gamepad2.x) {
                 arm.setArmPosition(ArmSubsystem.Arm_Start_Position);
             } else if (gamepad2.a) {
-                arm.setArmPosition(ArmSubsystem.Arm_Collect_Position);
+            arm.setArmPosition(ArmSubsystem.Arm_Collect_Position);
             } else if (gamepad2.b) {
                 arm.setArmPosition(ArmSubsystem.Arm_Low_Bucket);
             } else if (gamepad2.y) {
@@ -79,23 +80,27 @@ public class BetaDriveThing extends LinearOpMode {
             } else if (gamepad2.start) {
                 arm.resetArmEncoder();
             }
-
+            
             if (gamepad2.dpad_up) {
-                wrist.moveToPosition(.75);
+                wrist.moveToPosition(1);
             } else if (gamepad2.dpad_down) {
                 wrist.moveToPosition(0);
             }
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
             double front_right_power = (y + x + rx) / denominator;
-            double back_right_power = (y - x + rx) / denominator;
-            double back_left_power = (y + x - rx) / denominator;
+            double back_right_power = (-y + x - rx) / denominator;
+            double back_left_power = (-y - x + rx) / denominator;
             double front_left_power = (y - x - rx) / denominator;
 
             front_right_motor.setPower(front_right_power);
             back_right_motor.setPower(back_right_power);
             back_left_motor.setPower(back_left_power);
             front_left_motor.setPower(front_left_power);
+
+            arm.writeTelemetry();
+            slideSubsystem.writeTelemetry();
+            telemetry.update();
         }
     }
 }

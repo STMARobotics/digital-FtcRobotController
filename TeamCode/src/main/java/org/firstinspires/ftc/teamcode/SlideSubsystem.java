@@ -9,7 +9,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class SlideSubsystem {
 
-    private DcMotor slideMotor;
+    private final DcMotor slideMotor;
+    private final Telemetry telemetry;
+
     public static final String SLIDE_MOTOR="slide_motor";
 
     public static final double LIFT_TICKS_PER_MM = (111132.0 / 289.0) / 120.0;
@@ -20,15 +22,10 @@ public class SlideSubsystem {
 
     double liftPosition = LIFT_COLLAPSED;
 
-    private HardwareMap hardwareMap;
-    private Telemetry telemetry;
-
-
     public SlideSubsystem (HardwareMap hm, Telemetry telemetry){
-        this.hardwareMap = hm;
         this.telemetry = telemetry;
 
-        slideMotor = hardwareMap.get(DcMotor.class, SLIDE_MOTOR);
+        slideMotor = hm.get(DcMotor.class, SLIDE_MOTOR);
         slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -52,5 +49,13 @@ public class SlideSubsystem {
 
         ((DcMotorEx) slideMotor).setVelocity(1000);
         slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public double getPosition() {
+        return slideMotor.getCurrentPosition();
+    }
+
+    public void writeTelemetry() {
+        telemetry.addData("Slide Position", slideMotor.getCurrentPosition());
     }
 }
